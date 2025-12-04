@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — PCU Inventory</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="centered">
+    <div class="card">
+      <h2>Admin Dashboard</h2>
+      <p class="muted">Loading your admin tools...</p>
+
+      <div style="margin-top:1rem;">
+        <button id="btnItems" class="btn">Manage Items</button>
+        <button id="btnReports" class="btn">Reports</button>
+      </div>
+
+      <div id="adminArea" style="margin-top:1rem"></div>
+      <div style="margin-top:1rem"><a href="/" class="muted">Log out</a></div>
+    </div>
+  </main>
+  <script>
+    // This page should call /api/auth/me to ensure session is valid; else redirect to login.
+    const API_BASE = "https://YOUR_BACKEND_DOMAIN_OR_RAILWAY_URL";
+    (async ()=>{
+      const res = await fetch(`${API_BASE}/api/auth/me`, { credentials: 'include' });
+      if (!res.ok) {
+        window.location.href = '/';
+        return;
+      }
+      const me = await res.json();
+      if (me.role !== 'admin') {
+        alert('You are not an admin. Redirecting to user dashboard.');
+        window.location.href = '/user-dashboard.html';
+        return;
+      }
+      document.getElementById('adminArea').innerHTML = `<p class="muted">Welcome, ${me.username}. (Admin UI will be loaded here.)</p>`;
+    })();
+  </script>
+</body>
+</html>
