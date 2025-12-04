@@ -1,0 +1,107 @@
+:root{
+  --bg:#0b1220;
+  --card:#07102a;
+  --muted:#9aa4b2;
+  --accent:#06b6d4;
+  --glass: rgba(255,255,255,0.03);
+  --glass-2: rgba(255,255,255,0.02);
+  --white: #ecf0f6;
+  --success: #10b981;
+  --danger: #ef4444;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background: linear-gradient(180deg,#021026 0%, #061022 100%);
+  color:var(--white);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+}
+
+.centered{width:100%; max-width:420px; margin:auto}
+
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding:1.8rem;
+  border-radius:14px;
+  box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+  backdrop-filter: blur(6px);
+  transform-origin:center;
+  animation: floatIn .45s ease both;
+}
+
+.brand h1{margin:0;font-size:1.4rem;letter-spacing:0.4px}
+.brand .muted{color:var(--muted);font-size:0.88rem;margin-top:4px}
+
+.form{margin-top:1rem}
+.input-group{margin-bottom:0.9rem}
+.input-group label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:6px}
+.input-group input{
+  width:100%;
+  padding:0.72rem 0.9rem;
+  background:var(--glass);
+  border:1px solid rgba(255,255,255,0.03);
+  border-radius:10px;
+  color:var(--white);
+  outline:none;
+  transition: box-shadow .18s, transform .18s;
+}
+.input-group input:focus{box-shadow:0 8px 20px rgba(6,182,212,0.08); transform:translateY(-2px)}
+
+.pw-wrap{display:flex; gap:8px; align-items:center}
+.icon-btn{
+  background:var(--glass-2);
+  border:1px solid rgba(255,255,255,0.03);
+  padding:0.56rem;
+  border-radius:10px;
+  cursor:pointer;
+  color:var(--muted);
+}
+
+.actions{margin-top:1rem; display:flex; gap:8px; align-items:center; justify-content:flex-end}
+
+.btn{
+  position:relative;
+  overflow:hidden;
+  border:none;
+  padding:0.68rem 1.1rem;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  background:transparent;
+  color:var(--white);
+  transition: transform .12s ease, box-shadow .12s;
+}
+.btn:active{transform:translateY(1px)}
+.btn.primary{
+  background: linear-gradient(90deg, rgba(6,182,212,0.12), rgba(6,182,212,0.08));
+  border: 1px solid rgba(6,182,212,0.18);
+  box-shadow: 0 6px 16px rgba(6,182,212,0.06);
+}
+.btn .ripple{
+  position:absolute; left:0; top:0; width:0; height:0; border-radius:50%; background:rgba(255,255,255,0.06);
+  transform: translate(-50%, -50%); pointer-events:none; transition: width .35s ease, height .35s ease, opacity .8s;
+  opacity:0;
+}
+
+.msg{margin-top:0.8rem; color:var(--muted); font-size:0.9rem; min-height:1.1rem}
+.msg.error{color:var(--danger)}
+.msg.success{color:var(--success)}
+
+.card-footer{margin-top:1rem; text-align:center; color:var(--muted); font-size:0.8rem}
+
+/* simple float animation */
+@keyframes floatIn {
+  from{opacity:0; transform: translateY(8px) scale(.995)}
+  to{opacity:1; transform: translateY(0) scale(1)}
+}
+
+/* responsive */
+@media (max-width:480px){ .card{padding:1.2rem} }
