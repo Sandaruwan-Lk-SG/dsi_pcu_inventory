@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>User — PCU Inventory</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="centered">
+    <div class="card">
+      <h2>User Dashboard</h2>
+      <p class="muted">User tools (demo)</p>
+
+      <div style="margin-top:12px">
+        <!-- Autocomplete demo -->
+        <div class="autocomplete">
+          <label for="itemSearch">Search item</label>
+          <div class="ac-input-wrap">
+            <input id="itemSearch" type="text" placeholder="Type item name or sku (e.g. k)" autocomplete="off" />
+            <button id="acClear" class="icon-btn" title="Clear">✖</button>
+          </div>
+          <div id="acList" class="ac-list" role="listbox" aria-label="Search results" hidden></div>
+          <div id="acHelp" class="sr-only" aria-live="polite"></div>
+        </div>
+
+        <input type="hidden" id="selectedItemId" />
+
+        <div id="userArea" style="margin-top:14px" class="muted">Select an item to perform In/Out (demo).</div>
+      </div>
+
+      <div style="margin-top:14px"><a href="/" class="muted">Log out</a></div>
+    </div>
+  </main>
+  <script>
+    const API_BASE = "http://localhost:4000";
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
