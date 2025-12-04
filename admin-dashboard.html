@@ -1,43 +1,104 @@
-<!doctype html>
-<html lang="si">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin — PCU Inventory</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCU Admin | Full Control</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <main class="centered">
-    <div class="card">
-      <h2>Admin Dashboard</h2>
-      <p class="muted">Loading your admin tools...</p>
 
-      <div style="margin-top:1rem;">
-        <button id="btnItems" class="btn">Manage Items</button>
-        <button id="btnReports" class="btn">Reports</button>
-      </div>
-
-      <div id="adminArea" style="margin-top:1rem"></div>
-      <div style="margin-top:1rem"><a href="/" class="muted">Log out</a></div>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
-  </main>
-  <script>
-    // This page should call /api/auth/me to ensure session is valid; else redirect to login.
-    const API_BASE = "https://YOUR_BACKEND_DOMAIN_OR_RAILWAY_URL";
-    (async ()=>{
-      const res = await fetch(`${API_BASE}/api/auth/me`, { credentials: 'include' });
-      if (!res.ok) {
-        window.location.href = '/';
-        return;
-      }
-      const me = await res.json();
-      if (me.role !== 'admin') {
-        alert('You are not an admin. Redirecting to user dashboard.');
-        window.location.href = '/user-dashboard.html';
-        return;
-      }
-      document.getElementById('adminArea').innerHTML = `<p class="muted">Welcome, ${me.username}. (Admin UI will be loaded here.)</p>`;
-    })();
-  </script>
+
+    <div class="dashboard-container">
+        
+        <nav class="glass-sidebar">
+            <div class="profile">
+                <i class="fas fa-user-shield fa-3x"></i>
+                <h3>Admin Panel</h3>
+            </div>
+            <ul>
+                <li onclick="showSection('overview')" class="active"><i class="fas fa-chart-pie"></i> Overview</li>
+                <li onclick="showSection('add-item')"><i class="fas fa-plus-circle"></i> Add Item</li>
+                <li onclick="showSection('inventory')"><i class="fas fa-boxes"></i> Inventory</li>
+                <li onclick="showSection('requests')"><i class="fas fa-bell"></i> Requests <span id="reqCount" class="badge">0</span></li>
+                <li onclick="showSection('reports')"><i class="fas fa-history"></i> Logs & Reports</li>
+                <li onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
+            </ul>
+        </nav>
+
+        <main class="glass-content">
+            
+            <section id="overview" class="section">
+                <h2>Dashboard Overview</h2>
+                <div class="cards-grid">
+                    <div class="glass-card"><i class="fas fa-box"></i><h3 id="totalItems">0</h3><p>Total Items</p></div>
+                    <div class="glass-card warning"><i class="fas fa-exclamation-triangle"></i><h3 id="lowStock">0</h3><p>Low Stock</p></div>
+                    <div class="glass-card danger"><i class="fas fa-bug"></i><h3 id="pendingDamages">0</h3><p>Pending Issues</p></div>
+                </div>
+            </section>
+
+            <section id="add-item" class="section" style="display: none;">
+                <h2>Add New Item</h2>
+                <form id="addItemForm" class="internal-form">
+                    <div class="form-group"><label>Item Name</label><input type="text" id="itemName" required></div>
+                    <div class="form-group"><label>SKU</label><input type="text" id="itemSku"></div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="itemCategory" class="glass-input">
+                            <option>Packing</option><option>Insole</option><option>Sole</option>
+                            <option>Upper</option><option>Cut Insole</option><option>Cut Upper</option>
+                            <option>Line Order</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Size</label><input type="text" id="itemSize"></div>
+                    <button type="submit">Add to Inventory</button>
+                </form>
+            </section>
+
+            <section id="inventory" class="section" style="display: none;">
+                <h2>Current Stock</h2>
+                <div class="table-wrapper">
+                    <table class="glass-table">
+                        <thead><tr><th>Cat</th><th>Item</th><th>Size</th><th>Qty</th><th>Status</th></tr></thead>
+                        <tbody id="inventoryTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="requests" class="section" style="display: none;">
+                <h2>Pending Damage/Shortage Reports</h2>
+                <div class="table-wrapper">
+                    <table class="glass-table">
+                        <thead><tr><th>Date</th><th>Item</th><th>Type</th><th>Qty</th><th>Reported By</th><th>Action</th></tr></thead>
+                        <tbody id="requestsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="reports" class="section" style="display: none;">
+                <h2>System Activity Log (History)</h2>
+                <div class="table-wrapper">
+                    <table class="glass-table" style="font-size: 0.9em;">
+                        <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Item</th><th>Change</th><th>Line No</th></tr></thead>
+                        <tbody id="logsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="admin_script.js"></script>
+    <style>
+        .badge { background: red; padding: 2px 6px; border-radius: 50%; font-size: 12px; margin-left: 5px; }
+        .btn-action { padding: 5px 10px; margin: 2px; border-radius: 5px; cursor: pointer; color: white; font-size: 12px; }
+        .btn-approve { background: #00e676; }
+        .btn-reject { background: #ff4d4d; }
+    </style>
 </body>
 </html>
