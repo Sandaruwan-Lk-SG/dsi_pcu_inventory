@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PCU Inventory — Login</title>
+  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#0f172a">
+</head>
+<body>
+  <main class="centered">
+    <div class="card">
+      <div class="brand">
+        <h1>PCU Inventory</h1>
+        <p class="muted">Login to continue</p>
+      </div>
+
+      <form id="loginForm" class="form" autocomplete="off" novalidate>
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" required minlength="2" autocomplete="username" />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <div class="pw-wrap">
+            <input id="password" name="password" type="password" required autocomplete="current-password" />
+            <button type="button" id="togglePwd" aria-label="Show password" class="icon-btn">👁️</button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="submitBtn" class="btn primary" type="submit">
+            <span class="ripple"></span>
+            <span class="btn-text">Log in</span>
+          </button>
+        </div>
+
+        <div id="msg" class="msg" aria-live="polite"></div>
+      </form>
+
+      <footer class="card-footer">
+        <small>Hosted on GitHub Pages • Backend on cloud</small>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // Configure this to your deployed backend API base URL
+    const API_BASE = "https://YOUR_BACKEND_DOMAIN_OR_RAILWAY_URL";
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
